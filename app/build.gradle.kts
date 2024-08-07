@@ -64,6 +64,8 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.44")
     implementation(libs.volley)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
     // Retrofit

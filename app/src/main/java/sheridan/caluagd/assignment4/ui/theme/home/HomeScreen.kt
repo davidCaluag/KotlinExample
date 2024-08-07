@@ -1,8 +1,8 @@
 package sheridan.caluagd.assignment4.ui.theme.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -38,15 +38,20 @@ import sheridan.caluagd.assignment4.ui.theme.Assignment4Theme
 
 @Composable
 fun HomeScreen(
+    viewModel: MarsViewModel,
     marsUiState: MarsUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
+    click: (Int) -> Unit
 ) {
     when (marsUiState) {
         is MarsUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
         is MarsUiState.Success -> PhotosGridScreen(
-            marsUiState.photos, contentPadding = contentPadding, modifier = modifier.fillMaxWidth()
+            marsUiState.photos,
+            contentPadding = contentPadding,
+            modifier = modifier.fillMaxWidth(),
+            click = click
         )
         is MarsUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxSize())
     }
@@ -92,6 +97,7 @@ fun PhotosGridScreen(
     photos: List<MarsPhoto>,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
+    click: (Int) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
@@ -101,17 +107,18 @@ fun PhotosGridScreen(
         items(items = photos, key = { photo -> photo.id }) { photo ->
             MarsPhotoCard(
                 photo,
-                modifier = modifier
+                modifier = Modifier
                     .padding(4.dp)
                     .fillMaxWidth()
                     .aspectRatio(1.5f)
+                    .clickable{ click(photo.id.toInt())}
             )
         }
     }
 }
 
 @Composable
-fun MarsPhotoCard(photo: MarsPhoto, modifier: Modifier = Modifier) {
+fun MarsPhotoCard(photo: MarsPhoto, modifier: Modifier = Modifier){
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
@@ -150,6 +157,6 @@ fun ErrorScreenPreview() {
 fun PhotosGridScreenPreview() {
     Assignment4Theme {
         val mockData = List(10) { MarsPhoto("$it", "") }
-        PhotosGridScreen(mockData)
+        PhotosGridScreen(mockData, click = {})
     }
 }

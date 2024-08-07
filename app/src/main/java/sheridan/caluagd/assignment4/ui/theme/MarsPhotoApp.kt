@@ -39,7 +39,10 @@ fun MarsPhotosApp() {
             HomeScreen(
                 marsUiState = marsViewModel.marsUiState,
                 retryAction = marsViewModel::getMarsPhotos,
-                contentPadding = it
+                contentPadding = it,
+                click = { id->
+                    navController.navigate("${ProductDetailsDestination.route}/${id}")
+                }
             )
         }
     }
