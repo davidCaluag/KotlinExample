@@ -1,7 +1,13 @@
 package sheridan.caluagd.assignment4.database
 
-interface AppContainer{
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Retrofit
+import sheridan.caluagd.assignment4.local.MarsApiService
 
+interface AppContainer{
+    val marsPhotosRepository: MarsPhotosRepository
 }
 
 class DefaultAppContainer : AppContainer {
@@ -9,7 +15,7 @@ class DefaultAppContainer : AppContainer {
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-        .baseUrl(BASE_URL)
+        .baseUrl(base_url)
         .build()
 
 
