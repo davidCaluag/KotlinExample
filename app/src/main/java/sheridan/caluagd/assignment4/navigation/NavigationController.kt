@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import dagger.hilt.android.lifecycle.HiltViewModel
 import sheridan.caluagd.assignment4.database.MarsPhotosRepository
+import sheridan.caluagd.assignment4.ui.theme.detail.DetailPageScreen
 import sheridan.caluagd.assignment4.ui.theme.home.HomeScreen
 import sheridan.caluagd.assignment4.ui.theme.home.MarsUiState
 import sheridan.caluagd.assignment4.ui.theme.home.MarsViewModel
@@ -46,11 +47,7 @@ fun MarsNavigationHost(
             })
         ) {
             val viewModel = HiltViewModel()
-            DetailPageScreen(
-                navigateToEditProduct = { navController.navigate("${DetailPageNavigation.route}/$it") },
-                navigateBack = { navController.popBackStack() },
-                viewModel = viewModel
-            )
+            DetailPageScreen()
         }
 
 
