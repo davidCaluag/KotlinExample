@@ -2,17 +2,24 @@ package sheridan.caluagd.assignment4
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import sheridan.caluagd.assignment4.database.AppContainer
-import sheridan.caluagd.assignment4.database.DefaultAppContainer
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import sheridan.caluagd.assignment4.repository.OfflineRepository
+import javax.inject.Inject
 
 
 @HiltAndroidApp
-class MarsPhotoApplication : Application(){
-    lateinit var container : AppContainer
+class MarsPhotoApplication() : Application(){
+
+    @Inject
+    lateinit var container : OfflineRepository
 
     override fun onCreate() {
         super.onCreate()
-        container = DefaultAppContainer()
+
+        MainScope().launch {
+            container.updateLocalPhotos()
+        }
     }
 
 }

@@ -4,11 +4,9 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.jetbrains.kotlin.android) apply false
-    id("com.google.dagger.hilt.android") version "2.49" apply false
-
-    // needed by the local database
-    id("com.google.devtools.ksp") version "1.9.24-1.0.20" apply false
-    id("com.android.library") version "8.5.1" apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kapt) apply false
+    alias(libs.plugins.hilt) apply false
 }
 
 tasks.register("clean", Delete::class) {

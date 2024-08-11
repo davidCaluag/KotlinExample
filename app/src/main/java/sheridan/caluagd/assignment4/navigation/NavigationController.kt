@@ -4,35 +4,30 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import dagger.hilt.android.lifecycle.HiltViewModel
-import sheridan.caluagd.assignment4.database.MarsPhotosRepository
-import sheridan.caluagd.assignment4.ui.theme.detail.DetailPageScreen
+import sheridan.caluagd.assignment4.ui.theme.detail.DetailsScreen
+import sheridan.caluagd.assignment4.ui.theme.detail.MarsDetailViewModel
 import sheridan.caluagd.assignment4.ui.theme.home.HomeScreen
-import sheridan.caluagd.assignment4.ui.theme.home.MarsUiState
 import sheridan.caluagd.assignment4.ui.theme.home.MarsViewModel
 
 @Composable
-
 fun MarsNavigationHost(
     navController : NavHostController,
-    modifier: Modifier = Modifier,
-    repository: MarsPhotosRepository
 ){
-    NavHost(navController = navController, modifier = Modifier, startDestination = MainPageNavigation.route){
-        val marsViewModel: MarsViewModel = MarsViewModel(repository)
-
-
+    NavHost(
+        navController = navController,
+        modifier = Modifier,
+        startDestination = MainPageNavigation.route)
+    {
         composable(route = MainPageNavigation.route){
+            val marsViewModel: MarsViewModel = hiltViewModel()
             HomeScreen(
                 viewModel = marsViewModel,
-                marsUiState = marsViewModel.marsUiState,
-                retryAction = marsViewModel::getMarsPhotos,
-                contentPadding = PaddingValues(2.dp),
                 click = { id->
                     navController.navigate("${DetailPageNavigation.route}/${id}")
                 }
@@ -46,8 +41,13 @@ fun MarsNavigationHost(
                 type = NavType.IntType
             })
         ) {
-            val viewModel = HiltViewModel()
-            DetailPageScreen()
+            val viewModel: MarsDetailViewModel = hiltViewModel()
+            DetailsScreen(
+                viewModel,
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
 
 
