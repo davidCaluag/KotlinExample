@@ -16,19 +16,22 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DefaultAppContainer {
 
-    private val base_url = "https://android-kotlin-fun-mars-server.appspot.com/"
+    private const val baseUrl = "https://android-kotlin-fun-mars-server.appspot.com/"
+
+    private val json: Json = Json{
+        ignoreUnknownKeys = true
+    }
 
     @Provides
     @Singleton
     fun retrofit(): Retrofit =
         Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-        .baseUrl(base_url)
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .baseUrl(baseUrl)
         .build()
     /**
      * DI implementation for Mars photos repository
      */
-
 
     @Singleton
     @Provides

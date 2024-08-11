@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
@@ -63,7 +64,7 @@ fun HomeScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {ListTopBar(title = "Assignment 4", viewModel::reload, viewModel::delete, scrollBehavior)}){
+        topBar = {ListTopBar(title = "Assignment 4", viewModel::reload,viewModel::delete, scrollBehavior)}){
         innerPadding->
         if(listUiState is MarsUiState.Success){
             PhotosGridScreen(photos = listUiState.photos,
@@ -122,21 +123,19 @@ fun PhotosGridScreen(
         contentPadding = contentPadding,
     ) {
 
-        if(!photos.isEmpty()) {
-            Log.i("Initializing photos","No longer empty.")
-            items(items = photos, key = { photo -> photo.id }) { photo ->
-                MarsPhotoCard(
-                    photo,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxWidth()
-                        .aspectRatio(1.5f)
-                        .clickable { click(photo.id) }
-                )
-            }
-        }else{
-            Log.e("Not visible.","Photos aren't rendering properly.")
+        val isEmpty = photos.isEmpty()
+        Log.i("Initializing photos: is it empty? ","$isEmpty")
+        items(items = photos, key = { photo -> photo.id }) { photo ->
+            MarsPhotoCard(
+                photo,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
+                    .aspectRatio(1.5f)
+                    .clickable { click(photo.id) }
+            )
         }
+
     }
 }
 
@@ -147,16 +146,15 @@ fun MarsPhotoCard(photo: Mars, modifier: Modifier = Modifier){
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        Text(photo.imgSrc)
-//        AsyncImage(
-//            model = coil.request.ImageRequest.Builder(context = LocalContext.current).data(photo.imgSrc)
-//                .crossfade(true).build(),
-//            error = painterResource(R.drawable.ic_broken_image),
-//            placeholder = painterResource(R.drawable.loading_img),
-//            contentDescription = stringResource(R.string.mars_photo),
-//            contentScale = ContentScale.Crop,
-//            modifier = Modifier.fillMaxWidth()
-//        )
+        AsyncImage(
+            model = coil.request.ImageRequest.Builder(context = LocalContext.current).data(photo.imgSrc)
+                .crossfade(true).build(),
+            error = painterResource(R.drawable.ic_broken_image),
+            placeholder = painterResource(R.drawable.loading_img),
+            contentDescription = stringResource(R.string.mars_photo),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -192,7 +190,7 @@ fun PhotosGridScreenPreview() {
 fun ListTopBar(
     title : String,
     onReload: () -> Unit,
-    onDelete: () -> Unit,
+    onClear: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior
 ) = CenterAlignedTopAppBar(
     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -206,18 +204,6 @@ fun ListTopBar(
         )
     },
     actions = {
-
-        IconButton(
-            onClick = onDelete,
-            colors = IconButtonDefaults.iconButtonColors(
-                contentColor = MaterialTheme.colorScheme.primary
-            )
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Clear,
-                contentDescription = "Clear"
-            )
-        }
         IconButton(
             onClick = onReload,
             colors = IconButtonDefaults.iconButtonColors(
@@ -226,6 +212,18 @@ fun ListTopBar(
         ) {
             Icon(
                 imageVector = Icons.Filled.Refresh,
+                contentDescription = "Refresh"
+            )
+        }
+
+        IconButton(
+            onClick = onClear,
+            colors = IconButtonDefaults.iconButtonColors(
+                contentColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Clear,
                 contentDescription = "Refresh"
             )
         }

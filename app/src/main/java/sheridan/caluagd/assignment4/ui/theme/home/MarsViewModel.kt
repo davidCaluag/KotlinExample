@@ -38,7 +38,9 @@ class MarsViewModel @Inject constructor(
     /** The mutable State that stores the status of the most recent request */
     val marsUiState: StateFlow<MarsUiState> = getMarsUseCase().map{
         MarsUiState.Success(it)
-    }.catch{errorHandler}.stateIn(
+        }
+        .catch{errorHandler}
+        .stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
         initialValue = MarsUiState.Loading

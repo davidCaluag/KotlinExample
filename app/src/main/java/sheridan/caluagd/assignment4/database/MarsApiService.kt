@@ -10,6 +10,6 @@ interface MarsApiService {
      * The @GET annotation indicates that the "photos" endpoint will be requested with the GET
      * HTTP method
      */
-    @GET("photos.json")
+    @GET("photos")
     suspend fun getPhotos(): List<MarsPhoto>
 }

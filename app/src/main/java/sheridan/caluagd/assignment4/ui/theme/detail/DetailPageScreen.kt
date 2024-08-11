@@ -1,17 +1,27 @@
 package sheridan.caluagd.assignment4.ui.theme.detail
 
 import androidx.compose.foundation.layout.Column
-
+import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -42,7 +52,7 @@ fun DetailsScreen(
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { ListTopBar("Detail Screen" ,onBack, {}, scrollBehavior) }
+        topBar = { DetailListTopBar("Detail Screen" ,onBack, scrollBehavior) }
     ) { innerPadding ->
         if (detailsUiState is DetailsUiState.Success) {
             DetailsBody(
@@ -99,3 +109,37 @@ fun RestaurantDetails(
         )
     }
 }
+
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun DetailListTopBar(
+    title : String,
+    onBack: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior
+) = CenterAlignedTopAppBar(
+    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        titleContentColor = MaterialTheme.colorScheme.primary,
+    ),
+    actions = {
+        IconButton(
+            onClick = onBack,
+            colors = IconButtonDefaults.iconButtonColors(
+                contentColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Refresh"
+            )
+        }
+    },
+    title = {
+        Text(
+            title,
+            style = MaterialTheme.typography.headlineMedium
+        )
+    },
+    scrollBehavior = scrollBehavior
+)

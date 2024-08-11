@@ -17,7 +17,7 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideRestaurantDatabase(
+    fun provideMarsDatabase(
         @ApplicationContext applicationContext: Context
     ): MarsDatabase = Room.databaseBuilder(
         applicationContext, MarsDatabase::class.java, "mars_database"
@@ -25,7 +25,7 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideRestaurantDao(
+    fun provideMarsDao(
         database: MarsDatabase
     ): MarsDao = database.marsDao
 
