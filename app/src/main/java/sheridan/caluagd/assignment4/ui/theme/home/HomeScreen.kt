@@ -1,5 +1,6 @@
 package sheridan.caluagd.assignment4.ui.theme.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -120,15 +121,21 @@ fun PhotosGridScreen(
         modifier = modifier.padding(horizontal = 4.dp),
         contentPadding = contentPadding,
     ) {
-        items(items = photos, key = { photo -> photo.id }) { photo ->
-            MarsPhotoCard(
-                photo,
-                modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxWidth()
-                    .aspectRatio(1.5f)
-                    .clickable { click(photo.id.toInt()) }
-            )
+
+        if(!photos.isEmpty()) {
+            Log.i("Initializing photos","No longer empty.")
+            items(items = photos, key = { photo -> photo.id }) { photo ->
+                MarsPhotoCard(
+                    photo,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxWidth()
+                        .aspectRatio(1.5f)
+                        .clickable { click(photo.id) }
+                )
+            }
+        }else{
+            Log.e("Not visible.","Photos aren't rendering properly.")
         }
     }
 }
@@ -140,15 +147,16 @@ fun MarsPhotoCard(photo: Mars, modifier: Modifier = Modifier){
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        AsyncImage(
-            model = coil.request.ImageRequest.Builder(context = LocalContext.current).data(photo.imgSrc)
-                .crossfade(true).build(),
-            error = painterResource(R.drawable.ic_broken_image),
-            placeholder = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.mars_photo),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Text(photo.imgSrc)
+//        AsyncImage(
+//            model = coil.request.ImageRequest.Builder(context = LocalContext.current).data(photo.imgSrc)
+//                .crossfade(true).build(),
+//            error = painterResource(R.drawable.ic_broken_image),
+//            placeholder = painterResource(R.drawable.loading_img),
+//            contentDescription = stringResource(R.string.mars_photo),
+//            contentScale = ContentScale.Crop,
+//            modifier = Modifier.fillMaxWidth()
+//        )
     }
 }
 

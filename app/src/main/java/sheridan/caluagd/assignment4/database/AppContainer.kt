@@ -15,8 +15,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DefaultAppContainer {
-    private val base_url = "https://android-kotlin-fun-mars-server.appspot.com/"
 
+    private val base_url = "https://android-kotlin-fun-mars-server.appspot.com/"
 
     @Provides
     @Singleton
