@@ -8,7 +8,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import sheridan.caluagd.assignment4.database.MarsDatabase
-import sheridan.caluagd.assignment4.model.Mars
 import javax.inject.Singleton
 
 @Module
